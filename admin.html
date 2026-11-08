@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Wyspa Wolności — админ-панель</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--ink:#0d2b33;--sea:#0f4c5c;--coral:#ff6b4a;--sand:#fff6e8;--line:#e6dccb;--muted:#5b6f75}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Manrope',system-ui,sans-serif;background:#f4efe6;color:var(--ink);line-height:1.5}
+.hidden{display:none!important}
+.login{min-height:100vh;display:grid;place-items:center;padding:1rem}
+.box{background:#fff;border-radius:20px;padding:2rem;width:min(420px,100%);box-shadow:0 20px 50px -25px rgba(13,43,51,.4);display:grid;gap:1rem}
+h1{font-size:1.4rem}h2{font-size:1.15rem;margin-bottom:.6rem}h3{font-size:1rem}
+label{display:grid;gap:.25rem;font-weight:700;font-size:.84rem}
+input,textarea,select{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:.6rem .75rem;background:#fff;width:100%}
+textarea{min-height:76px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--coral);border-color:transparent}
+button,.btn{font:inherit;font-weight:800;border:0;border-radius:999px;padding:.65rem 1.2rem;cursor:pointer;background:var(--sea);color:#fff}
+button.sec{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+button.danger{background:#c0392b}
+button.warn{background:var(--coral)}
+button:disabled{opacity:.5;cursor:wait}
+.link{background:none;color:var(--sea);padding:0;text-decoration:underline;font-weight:700}
+.msg{font-weight:700;font-size:.9rem;min-height:1.2em}.msg.ok{color:#1d7a4b}.msg.err{color:#c0392b}
+header{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.7rem 1rem;flex-wrap:wrap}
+.top a{color:#ffc83d;font-weight:700}
+.tabs{display:flex;gap:.3rem;overflow-x:auto;padding:0 1rem .6rem}
+.tabs button{background:rgba(255,255,255,.1);padding:.45rem .9rem;white-space:nowrap;font-size:.9rem}
+.tabs button.on{background:var(--coral)}
+main{width:min(980px,96vw);margin:1.2rem auto 6rem}
+.panel{background:#fff;border-radius:18px;padding:1.3rem;margin-bottom:1rem;box-shadow:0 10px 30px -22px rgba(13,43,51,.5)}
+.grid{display:grid;gap:.8rem}
+.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
+@media(max-width:760px){.g3,.g2{grid-template-columns:1fr}}
+.item{border:1.5px solid var(--line);border-radius:14px;padding:1rem;margin-bottom:.8rem;background:#fffdf9}
+.item-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;gap:.5rem}
+.lng{font-size:.72rem;color:var(--muted);font-weight:800;letter-spacing:.08em}
+.save{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:.7rem 1rem;display:flex;gap:1rem;justify-content:center;align-items:center;z-index:30}
+.thumb{width:96px;height:64px;border-radius:10px;object-fit:cover;background:#eee;border:1px solid var(--line)}
+.imgrow{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}
+.help{color:var(--muted);font-size:.86rem;margin-bottom:.8rem}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.pill{display:inline-block;background:#e6f3ef;color:var(--sea);padding:.1rem .6rem;border-radius:999px;font-size:.78rem;font-weight:800}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div id="vLogin" class="login hidden">
+<form class="box" id="fLogin">
+<h1>Wyspa Wolności<br><small style="font-weight:600;color:var(--muted)">Админ-панель</small></h1>
+<label>E-mail<input type="email" id="lEmail" autocomplete="username" required></label>
+<label>Пароль<input type="password" id="lPass" autocomplete="current-password" required></label>
+<button type="submit" id="bLogin">Войти</button>
+<button type="button" class="link" id="bForgot">Забыли пароль? Отправить письмо для сброса</button>
+<div class="msg" id="lMsg"></div>
+<a href="index.html" class="link">← На сайт</a>
+</form>
+</div>
+<!-- NEW PASSWORD (recovery) -->
+<div id="vRecover" class="login hidden">
+<form class="box" id="fRecover">
+<h1>Новый пароль</h1>
+<label>Новый пароль (не короче 8 символов)<input type="password" id="rP1" autocomplete="new-password" minlength="8" required></label>
+<label>Повторите пароль<input type="password" id="rP2" autocomplete="new-password" minlength="8" required></label>
+<button type="submit">Сохранить пароль</button>
+<div class="msg" id="rMsg"></div>
+</form>
+</div>
+<!-- APP -->
+<div id="vApp" class="hidden">
+<header>
+<div class="top"><strong>Wyspa Wolności · админ-панель</strong>
+<span><a href="index.html" target="_blank">Открыть сайт ↗</a> &nbsp; <button class="sec" id="bOut" style="padding:.35rem .9rem">Выйти</button></span></div>
+<div class="tabs" id="tabs"></div>
+</header>
+<main id="main"></main>
+<div class="save" id="saveBar"><span class="msg" id="sMsg"></span><button id="bSave">Сохранить на сайте</button></div>
+</div>
+<script>
+const SB_URL='https://qhqltpyjjzypmuifigzi.supabase.co';
+const SB_KEY='sb_publishable_UpNHZdsrWamz2isgk_Hgeg_hte_zYPn';
+const sb = supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $ = s=>document.querySelector(s);
+const LANGS=[['pl','PL'],['uk','UA'],['en','EN']];
+const show = id=>{ ['vLogin','vRecover','vApp'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id)); };
+const say=(el,t,ok)=>{ el.textContent=t||''; el.className='msg '+(t?(ok?'ok':'err'):''); };
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let DATA={}, NEWS=[], EVENTS=[], MSGS=[], TAB='texts', dirty=false, recovering=false;
+/* ---------- auth ---------- */
+sb.auth.onAuthStateChange((ev,session)=>{
+if(ev==='PASSWORD_RECOVERY'){ recovering=true; show('vRecover'); return; }
+if(recovering) return;
+if(ev==='SIGNED_OUT'||!session){ show('vLogin'); }
+});
+(async()=>{
+const {data:{session}}=await sb.auth.getSession();
+if(recovering) return;
+if(session) enter(); else show('vLogin');
+})();
+$('#fLogin').onsubmit=async e=>{
+e.preventDefault(); const b=$('#bLogin'); b.disabled=true; say($('#lMsg'),'');
+const {error}=await sb.auth.signInWithPassword({email:$('#lEmail').value.trim(),password:$('#lPass').value});
+b.disabled=false;
+if(error) return say($('#lMsg'),'Неверный e-mail или пароль.');
+$('#lPass').value=''; enter();
+};
+$('#bForgot').onclick=async()=>{
+const em=$('#lEmail').value.trim(); if(!em) return say($('#lMsg'),'Введите e-mail выше.');
+const {error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname});
+say($('#lMsg'),error?'Не удалось отправить письмо: '+error.message:'Если такой аккаунт есть, письмо со ссылкой отправлено.',!error);
+};
+$('#fRecover').onsubmit=async e=>{
+e.preventDefault();
+if($('#rP1').value!==$('#rP2').value) return say($('#rMsg'),'Пароли не совпадают.');
+const {error}=await sb.auth.updateUser({password:$('#rP1').value});
+if(error) return say($('#rMsg'),error.message);
+recovering=false; history.replaceState(null,'',location.pathname); enter();
+};
+$('#bOut').onclick=async()=>{ if(dirty && !confirm('Есть несохранённые изменения. Выйти?')) return; await sb.auth.signOut(); show('vLogin'); };
+async function enter(){
+show('vApp');
+const {data:{user}}=await sb.auth.getUser();
+if(!user){ show('vLogin'); return; }
+await loadAll(); buildTabs(); draw();
+}
+/* ---------- data ---------- */
+async function loadAll(){
+const [c,n,e,m]=await Promise.all([
+sb.from('site_content').select('data').eq('id',1).maybeSingle(),
+sb.from('news').select('*').order('date',{ascending:false}).order('created_at',{ascending:false}),
+sb.from('events').select('*').order('date',{ascending:true}),
+sb.from('messages').select('*').order('created_at',{ascending:false})
+]);
+DATA=(c.data&&c.data.data)||{};
+DATA.texts=DATA.texts||{}; DATA.contact=DATA.contact||{};
+['stats','benefits','programs','partners','partner_benefits','team','testimonials'].forEach(k=>DATA[k]=DATA[k]||[]);
+DATA.testimonials=DATA.testimonials||[]; delete DATA.testimonial;
+NEWS=n.data||[]; EVENTS=e.data||[]; MSGS=m.data||[];
+dirty=false;
+}
+async function saveContent(){
+const b=$('#bSave'); b.disabled=true; say($('#sMsg'),'Сохраняю…',true);
+const {error}=await sb.from('site_content').upsert({id:1,data:DATA,updated_at:new Date().toISOString()});
+b.disabled=false;
+if(error) return say($('#sMsg'),'Ошибка: '+error.message);
+dirty=false; say($('#sMsg'),'Сохранено. Изменения уже на сайте.',true); setTimeout(()=>say($('#sMsg'),''),4000);
+}
+$('#bSave').onclick=saveContent;
+window.addEventListener('beforeunload',e=>{ if(dirty){e.preventDefault();e.returnValue='';} });
+/* ---------- helpers: fields ---------- */
+const mark=()=>{dirty=true;};
+function i18n(obj,key,label,rows){ // obj[key] = {pl,uk,en}
+obj[key]=obj[key]||{};
+return `<div><div class="lng">${esc(label)}</div><div class="grid g3">${LANGS.map(([l,L])=>`<label>${L}<textarea data-o="${path(obj)}" data-k="${key}" data-l="${l}" rows="${rows||2}">${esc(obj[key][l]||'')}</textarea></label>`).join('')}</div></div>`;
+}
+const registry=[]; const path=o=>{ let i=registry.indexOf(o); if(i<0){registry.push(o);i=registry.length-1;} return i; };
+function txt(obj,key,label,type){ return `<label>${esc(label)}<input ${type?`type="${type}"`:''} data-o="${path(obj)}" data-k="${key}" value="${esc(obj[key]||'')}"></label>`; }
+function img(obj,key,label,folder){
+return `<div><div class="lng">${esc(label)}</div><div class="imgrow">${obj[key]?`<img class="thumb" src="${esc(obj[key])}" alt="">`:'<div class="thumb"></div>'}
+<label style="flex:1;min-width:200px">Ссылка на фото<input data-o="${path(obj)}" data-k="${key}" value="${esc(obj[key]||'')}"></label>
+<label>Загрузить файл<input type="file" accept="image/*" data-up="${path(obj)}" data-k="${key}" data-f="${folder||'misc'}"></label></div></div>`;
+}
+function bind(root){
+root.querySelectorAll('[data-o]').forEach(el=>{
+el.addEventListener('input',()=>{
+const o=registry[+el.dataset.o], k=el.dataset.k;
+if(el.dataset.l){ o[k]=o[k]||{}; o[k][el.dataset.l]=el.value; } else o[k]=el.value;
+mark(); if(el.dataset.item) el.closest('.item').dataset.dirty='1';
+});
+});
+root.querySelectorAll('[data-up]').forEach(el=>el.addEventListener('change',async()=>{
+const f=el.files[0]; if(!f) return; const o=registry[+el.dataset.up], k=el.dataset.k;
+say($('#sMsg'),'Загружаю фото…',true);
+try{ o[k]=await uploadImage(f,el.dataset.f); mark(); say($('#sMsg'),'Фото загружено. Нажмите «Сохранить».',true);
+const it=el.closest('.item'); if(it) it.dataset.dirty='1'; draw(true); }
+catch(e){ say($('#sMsg'),'Не удалось загрузить: '+e.message); }
+}));
+}
+async function resize(file,max=1600){
+if(file.type==='image/svg+xml'||file.type==='image/gif') return file;
+const bmp=await createImageBitmap(file); const s=Math.min(1,max/Math.max(bmp.width,bmp.height));
+const c=document.createElement('canvas'); c.width=Math.round(bmp.width*s); c.height=Math.round(bmp.height*s);
+c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+const blob=await new Promise(r=>c.toBlob(r,'image/webp',.86)); return blob||file;
+}
+async function uploadImage(file,folder){
+const blob=await resize(file); const ext=blob.type==='image/webp'?'webp':(file.name.split('.').pop()||'png').toLowerCase();
+const name=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`;
+const {error}=await sb.storage.from('images').upload(name,blob,{contentType:blob.type,upsert:false});
+if(error) throw error; return sb.storage.from('images').getPublicUrl(name).data.publicUrl;
+}
+function list(arr,title,render,blank,help){
+const id=path(arr);
+return `<div class="panel"><h2>${title}</h2>${help?`<p class="help">${help}</p>`:''}
+${arr.map((it,i)=>`<div class="item"><div class="item-h"><strong>#${i+1}</strong><span class="row">
+<button class="sec" data-mv="${id}:${i}:-1">↑</button><button class="sec" data-mv="${id}:${i}:1">↓</button>
+<button class="danger" data-del="${id}:${i}">Удалить</button></span></div>${render(it)}</div>`).join('')}
+<button class="warn" data-add="${id}" data-blank='${esc(JSON.stringify(blank))}'>+ Добавить</button></div>`;
+}
+function wireLists(root){
+root.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{ registry[+b.dataset.add].push(JSON.parse(b.dataset.blank)); mark(); draw(true); });
+root.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
+if(b.dataset.armed!=='1'){ b.dataset.armed='1'; b.textContent='Точно удалить?'; setTimeout(()=>{b.dataset.armed='0';b.textContent='Удалить';},3000); return; }
+const [id,i]=b.dataset.del.split(':'); registry[+id].splice(+i,1); mark(); draw(true); });
+root.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{
+const [id,i,d]=b.dataset.mv.split(':').map(Number); const a=registry[id], j=i+d; if(j<0||j>=a.length) return;
+[a[i],a[j]]=[a[j],a[i]]; mark(); draw(true); });
+}
+/* ---------- tabs ---------- */
+const TABS=[['texts','Тексты'],['stats','Цифры'],['benefits','Преимущества'],['testimonials','Отзывы'],['programs','Программы'],['partners','Партнёры'],['team','Команда'],['contact','Контакты'],['news','Новости'],['events','Мероприятия'],['messages','Сообщения'],['backup','Резерв. копия'],['account','Аккаунт']];
+function buildTabs(){
+$('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-t="${k}" class="${k===TAB?'on':''}">${l}${k==='messages'&&MSGS.length?` (${MSGS.length})`:''}</button>`).join('');
+$('#tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{ TAB=b.dataset.t; buildTabs(); draw(); window.scrollTo(0,0); });
+}
+const TEXT_LABELS={hero_eyebrow:'Главная: надпись над заголовком',hero_title:'Главная: заголовок',hero_text:'Главная: текст',about_title:'«Кто мы»: заголовок',about_text:'«Кто мы»: текст',stats_title:'Заголовок блока цифр',benefits_sub:'Преимущества: надпись',benefits_title:'Преимущества: заголовок',program_title:'Программа: заголовок',program_sub:'Программа: подзаголовок',news_title:'Новости: заголовок',events_title:'Заголовок «Ближайшие события»',partners_title:'Партнёры: заголовок',partners_sub:'Партнёры: подзаголовок',partner_benefits_title:'«Что получают партнёры»: заголовок',partner_benefits_text:'«Что получают партнёры»: текст',team_title:'Команда: заголовок',testimonials_title:'Отзывы: заголовок',contact_title:'Контакты: заголовок',contact_text:'Контакты: текст'};
+function draw(keepScroll){
+const y=window.scrollY; registry.length=0; const m=$('#main'); let h='';
+const saveBar=$('#saveBar');
+const dbTab=['news','events','messages','backup','account'].includes(TAB);
+saveBar.classList.toggle('hidden',dbTab);
+if(TAB==='texts'){
+h=`<div class="panel"><h2>Тексты сайта</h2><p class="help">Каждый текст на трёх языках: польский, украинский, английский. После правок нажмите «Сохранить на сайте» внизу.</p><div class="grid">`+
+Object.keys(TEXT_LABELS).map(k=>i18n(DATA.texts,k,TEXT_LABELS[k],k.endsWith('text')||k==='program_sub'||k==='partners_sub'?3:1)).join('')+`</div></div>`;
+}
+if(TAB==='stats') h=list(DATA.stats,'Цифры клуба',s=>`<div class="grid">${txt(s,'value','Число (например 150+)')}${i18n(s,'label','Подпись')}</div>`,{value:'',label:{}});
+if(TAB==='benefits') h=list(DATA.benefits,'Преимущества клуба',s=>`<div class="grid">${i18n(s,'title','Заголовок')}${i18n(s,'text','Текст',3)}</div>`,{title:{},text:{}})+
+list(DATA.partner_benefits,'Что получают партнёры',s=>`<div class="grid">${i18n(s,'title','Заголовок')}${i18n(s,'text','Текст',3)}</div>`,{title:{},text:{}});
+if(TAB==='testimonials') h=list(DATA.testimonials,'Отзывы участников',r=>`<div class="grid g2">${txt(r,'name','Имя')}${txt(r,'age','Возраст или подпись (например 15, или «мама участника»)')}</div>${i18n(r,'text','Текст отзыва',3)}`,{name:'',age:'',text:{}},'Пока отзывов нет, блок на сайте скрыт. Добавьте отзыв, нажмите «Сохранить на сайте», и блок появится. Достаточно заполнить один язык, на остальных покажется он же.');
+if(TAB==='programs') h=list(DATA.programs,'Программы и занятия',p=>`<div class="grid"><label>Возрастная группа<select data-o="${path(p)}" data-k="group"><option value="older" ${p.group==='older'?'selected':''}>14–18+</option><option value="younger" ${p.group==='younger'?'selected':''}>10–13</option></select></label>
+${i18n(p,'title','Название')}${i18n(p,'desc','Описание',3)}${i18n(p,'schedule','Расписание')}${i18n(p,'price','Стоимость')}</div>`,{group:'older',title:{},desc:{},schedule:{},price:{}});
+if(TAB==='partners') h=list(DATA.partners,'Партнёры',p=>`<div class="grid g2">${txt(p,'name','Название')}${txt(p,'url','Ссылка на сайт партнёра (необязательно)')}</div>${img(p,'logo','Логотип','partners')}`,{name:'',url:'',logo:''},'Если логотипа нет, на сайте покажется название.');
+if(TAB==='team') h=list(DATA.team,'Команда',p=>`<div class="grid">${txt(p,'name','Имя')}${i18n(p,'role','Должность')}${i18n(p,'bio','О человеке',3)}</div>${img(p,'photo','Фото','team')}`,{name:'',role:{},bio:{},photo:''});
+if(TAB==='contact'){ const c=DATA.contact; h=`<div class="panel"><h2>Контакты и соцсети</h2><p class="help">Пустые поля на сайте не показываются. Ссылки соцсетей пишите полностью, с https://</p><div class="grid g2">
+${txt(c,'email','E-mail')}${txt(c,'address','Адрес')}${txt(c,'phone1','Телефон 1')}${txt(c,'phone2','Телефон 2')}${txt(c,'instagram','Instagram (ссылка)')}${txt(c,'facebook','Facebook (ссылка, если появится)')}${txt(c,'telegram','Telegram (ссылка, если появится)')}${txt(c,'support_url','Кнопка «Wesprzyj projekt»: ссылка (сбор, Patronite и т.п.)')}${txt(c,'registry','Регистрационные данные (KRS, NIP, REGON) для подвала сайта')}</div></div>`; }
+if(TAB==='news') h=newsHtml();
+if(TAB==='events') h=eventsHtml();
+if(TAB==='messages') h=msgsHtml();
+if(TAB==='backup') h=backupHtml();
+if(TAB==='account') h=accountHtml();
+m.innerHTML=h; bind(m); wireLists(m); wireExtra(m);
+if(keepScroll) window.scrollTo(0,y);
+}
+/* ---------- news / events (own rows) ---------- */
+function rowEditor(kind,arr,fields,blankTitle){
+return `<div class="panel"><h2>${kind==='news'?'Новости':'Мероприятия'}</h2>
+<p class="help">${kind==='news'?'Текст новости пишется на одном языке (обычно польском). Дата определяет порядок.':'Дата в будущем показывается как «ближайшее», в прошлом попадает в «Прошедшие».'} Каждая запись сохраняется своей кнопкой.</p>
+<button class="warn" data-new="${kind}">+ Добавить</button></div>`+
+arr.map(r=>`<div class="item" data-id="${r.id}"><div class="item-h"><strong>${esc(r.title||blankTitle)}</strong><span class="pill">${r.date||'без даты'}</span></div>
+<div class="grid">${fields(r)}</div>
+<div class="row" style="margin-top:.8rem"><button data-savr="${kind}:${r.id}">Сохранить</button><button class="danger" data-delr="${kind}:${r.id}">Удалить</button><span class="msg"></span></div></div>`).join('');
+}
+const newsHtml=()=>rowEditor('news',NEWS,r=>`${txt(r,'title','Заголовок')}${txt(r,'date','Дата','date')}${`<label>Текст<textarea data-o="${path(r)}" data-k="text" rows="4">${esc(r.text||'')}</textarea></label>`}${img(r,'image','Фото','news')}`,'Новая новость');
+const eventsHtml=()=>rowEditor('events',EVENTS,r=>`${txt(r,'title','Название')}<div class="grid g3">${txt(r,'date','Дата','date')}${txt(r,'time','Время (например 16:00)')}${txt(r,'place','Место')}</div><label>Описание<textarea data-o="${path(r)}" data-k="text" rows="3">${esc(r.text||'')}</textarea></label>${img(r,'image','Фото','events')}`,'Новое мероприятие');
+function wireExtra(root){
+root.querySelectorAll('[data-new]').forEach(b=>b.onclick=async()=>{
+const k=b.dataset.new; const row=k==='news'?{title:'Новая новость',date:new Date().toISOString().slice(0,10),text:''}:{title:'Новое мероприятие',date:new Date().toISOString().slice(0,10),time:'',place:'',text:''};
+const {data,error}=await sb.from(k).insert(row).select().single(); if(error) return say($('#sMsg'),error.message);
+(k==='news'?NEWS:EVENTS).unshift(data); draw();
+});
+root.querySelectorAll('[data-savr]').forEach(b=>b.onclick=async()=>{
+const [k,id]=b.dataset.savr.split(':'); const arr=k==='news'?NEWS:EVENTS; const r=arr.find(x=>x.id===id); const msg=b.parentElement.querySelector('.msg');
+const {id:_i,created_at,...rest}=r; if(!rest.date) rest.date=null;
+b.disabled=true; const {error}=await sb.from(k).update(rest).eq('id',id); b.disabled=false;
+say(msg,error?error.message:'Сохранено, уже на сайте.',!error);
+});
+root.querySelectorAll('[data-delr]').forEach(b=>b.onclick=async()=>{
+if(b.dataset.armed!=='1'){ b.dataset.armed='1'; b.textContent='Точно удалить?'; setTimeout(()=>{b.dataset.armed='0';b.textContent='Удалить';},3000); return; }
+const [k,id]=b.dataset.delr.split(':'); const {error}=await sb.from(k).delete().eq('id',id); if(error) return say($('#sMsg'),error.message);
+if(k==='news') NEWS=NEWS.filter(x=>x.id!==id); else EVENTS=EVENTS.filter(x=>x.id!==id); draw();
+});
+root.querySelectorAll('[data-delm]').forEach(b=>b.onclick=async()=>{
+const id=b.dataset.delm; const {error}=await sb.from('messages').delete().eq('id',id); if(error) return;
+MSGS=MSGS.filter(x=>x.id!==id); buildTabs(); draw(true);
+});
+const bk=root.querySelector('#bBackup'); if(bk) bk.onclick=doBackup;
+const rs=root.querySelector('#fRestore'); if(rs) rs.onchange=doRestore;
+const pw=root.querySelector('#fPw'); if(pw) pw.onsubmit=changePw;
+const rm=root.querySelector('#bMail'); if(rm) rm.onclick=async()=>{ const {data:{user}}=await sb.auth.getUser();
+const {error}=await sb.auth.resetPasswordForEmail(user.email,{redirectTo:location.origin+location.pathname}); say(root.querySelector('#aMsg'),error?error.message:'Письмо отправлено на '+user.email,!error); };
+}
+const msgsHtml=()=>`<div class="panel"><h2>Сообщения с формы на сайте</h2>${MSGS.length?'':'<p class="help">Пока нет сообщений.</p>'}</div>`+
+MSGS.map(m=>`<div class="item"><div class="item-h"><strong>${esc(m.name)} ${esc(m.surname||'')}</strong><span class="pill">${new Date(m.created_at).toLocaleString('ru-RU')}</span></div>
+<p><a href="mailto:${esc(m.email)}">${esc(m.email)}</a>${m.topic?` · <b>${esc(m.topic)}</b>`:''} · ${esc(m.lang||'')}</p><p style="white-space:pre-wrap;margin:.5rem 0">${esc(m.message)}</p>
+<button class="danger" data-delm="${m.id}">Удалить</button></div>`).join('');
+/* ---------- backup ---------- */
+const backupHtml=()=>`<div class="panel"><h2>Резервная копия</h2><p class="help">Файл со всем контентом сайта: тексты, новости, мероприятия, ссылки на фото. Сохраняйте его время от времени на компьютер. Сами фото лежат в облаке отдельно.</p>
+<div class="row"><button id="bBackup">Скачать копию</button></div></div>
+<div class="panel"><h2>Восстановление из копии</h2><p class="help">Заменит текущие тексты, новости и мероприятия содержимым файла. Сообщения с формы не затрагиваются.</p>
+<input type="file" id="fRestore" accept="application/json"><div class="msg" id="bMsg"></div></div>`;
+async function doBackup(){
+await loadAll();
+const blob=new Blob([JSON.stringify({version:1,exported_at:new Date().toISOString(),site_content:DATA,news:NEWS,events:EVENTS},null,2)],{type:'application/json'});
+const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='wyspa-backup-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+async function doRestore(e){
+const f=e.target.files[0]; if(!f) return; const msg=$('#bMsg');
+try{
+const j=JSON.parse(await f.text()); if(!j.site_content||!Array.isArray(j.news)||!Array.isArray(j.events)) throw new Error('Это не файл резервной копии сайта.');
+if(!confirm('Заменить текущий контент сайта содержимым файла?')) return;
+let r=await sb.from('site_content').upsert({id:1,data:j.site_content,updated_at:new Date().toISOString()}); if(r.error) throw r.error;
+r=await sb.from('news').delete().not('id','is',null); if(r.error) throw r.error;
+r=await sb.from('events').delete().not('id','is',null); if(r.error) throw r.error;
+const clean=a=>a.map(({created_at,...x})=>({...x,date:x.date||null}));
+if(j.news.length){ r=await sb.from('news').insert(clean(j.news)); if(r.error) throw r.error; }
+if(j.events.length){ r=await sb.from('events').insert(clean(j.events)); if(r.error) throw r.error; }
+await loadAll(); say(msg,'Восстановлено.',true);
+}catch(err){ say(msg,'Ошибка: '+(err.message||err)); }
+}
+/* ---------- account ---------- */
+const accountHtml=()=>`<div class="panel"><h2>Сменить пароль</h2><form id="fPw" class="grid" style="max-width:420px">
+<label>Новый пароль (не короче 8 символов)<input type="password" id="p1" minlength="8" autocomplete="new-password" required></label>
+<label>Повторите<input type="password" id="p2" minlength="8" autocomplete="new-password" required></label>
+<button>Сменить пароль</button></form><div class="msg" id="aMsg"></div>
+<p class="help" style="margin-top:1rem">Пароль хранится только в Supabase Auth в зашифрованном виде, в файлах сайта его нет.</p>
+<button class="sec" id="bMail">Отправить на почту ссылку для сброса пароля</button></div>`;
+async function changePw(e){
+e.preventDefault(); const a=$('#p1').value,b=$('#p2').value,m=$('#aMsg');
+if(a!==b) return say(m,'Пароли не совпадают.'); if(a.length<8) return say(m,'Слишком короткий пароль.');
+const {error}=await sb.auth.updateUser({password:a}); say(m,error?error.message:'Пароль изменён.',!error); if(!error) e.target.reset();
+}
+</script>
+</body>
+</html>
