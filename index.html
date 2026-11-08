@@ -328,7 +328,7 @@ let group = 'older';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const tr = o => (o && typeof o==='object') ? (o[lang] || o.pl || o.en || o.uk || '') : (o ?? '');
 const $ = s => document.querySelector(s);
-const safeUrl = u => /^(https?:\/\/|mailto:|tel:|#|assets\/)/i.test(u||'') ? u : '';
+const safeUrl = u => /^(https?:\/\/|mailto:|tel:|#|assets\/|data:image\/(png|webp|jpeg|gif);base64,)/i.test(u||'') ? u : '';
 async function sb(path){
 const r = await fetch(SB_URL + '/rest/v1/' + path, {headers:{apikey:SB_KEY}});
 if(!r.ok) throw new Error('HTTP ' + r.status);
