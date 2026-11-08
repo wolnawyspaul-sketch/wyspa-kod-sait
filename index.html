@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wyspa Wolności — klub dla nastolatków w Polsce</title>
+<meta name="description" content="Wyspa Wolności — klub dla nastolatków, którzy przeprowadzili się do Polski. Bądź sobą. Być razem!">
+<meta property="og:title" content="Wyspa Wolności">
+<meta property="og:description" content="Klub dla nastolatków w Polsce. Bądź sobą. Być razem!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap&subset=cyrillic,latin-ext" rel="stylesheet">
+<style>
+:root{
+--ink:#0d2b33; --sea:#0f4c5c; --sea2:#0b3640; --coral:#ff6b4a; --sun:#ffc83d; --sand:#fff6e8; --foam:#e6f3ef; --white:#fff;
+--muted:#5b6f75; --line:#e6dccb; --r:22px; --shadow:0 18px 40px -22px rgba(13,43,51,.35);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:'Manrope',system-ui,sans-serif;color:var(--ink);background:var(--sand);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{width:min(1160px,92vw);margin-inline:auto}
+h1,h2,h3{font-family:'Unbounded','Manrope',sans-serif;line-height:1.12;letter-spacing:-.01em}
+h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700}
+h3{font-size:1.1rem;font-weight:700}
+.eyebrow{display:inline-block;font-weight:800;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:.8rem}
+.sub{color:var(--muted);max-width:60ch;margin-top:.9rem;font-size:1.05rem}
+section{padding:clamp(56px,9vw,110px) 0}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.5rem;border-radius:999px;font-weight:800;text-decoration:none;border:2px solid transparent;cursor:pointer;font-size:1rem;font-family:inherit;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--coral);color:#fff;box-shadow:0 10px 24px -10px rgba(255,107,74,.8)}
+.btn-ghost{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-light{background:#fff;color:var(--sea2)}
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,246,232,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:70px}
+.brand{font-family:'Unbounded',sans-serif;font-weight:800;text-decoration:none;font-size:1.05rem;display:flex;align-items:center;gap:.6rem}
+.brand i{width:34px;height:34px;border-radius:50% 50% 50% 8px;background:var(--coral);display:grid;place-items:center;color:#fff;font-style:normal;font-size:.95rem}
+nav ul{display:flex;gap:1.6rem;list-style:none;padding:0}
+nav a{text-decoration:none;font-weight:700;font-size:.95rem;opacity:.8}
+nav a:hover{opacity:1;color:var(--coral)}
+.tools{display:flex;align-items:center;gap:.8rem}
+.lang{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;font:inherit;font-weight:800;font-size:.78rem;padding:.35rem .7rem;border-radius:999px;cursor:pointer;color:var(--muted)}
+.lang button.on{background:var(--ink);color:#fff}
+.burger{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;width:42px;height:42px;font-size:1.2rem;cursor:pointer}
+@media(max-width:900px){
+nav{position:absolute;left:0;right:0;top:70px;background:var(--sand);border-bottom:1px solid var(--line);display:none;padding:1rem 4vw 1.4rem}
+nav.open{display:block}
+nav ul{flex-direction:column;gap:1rem}
+.burger{display:block}
+.tools .btn{display:none}
+}
+/* hero */
+.hero{position:relative;overflow:hidden;padding:clamp(48px,8vw,100px) 0 clamp(90px,12vw,150px)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:center;position:relative;z-index:2}
+.hero h1{font-size:clamp(2.4rem,6.2vw,4.8rem);font-weight:800;margin:.2rem 0 1.3rem}
+.hero h1 em{font-style:normal;color:var(--coral)}
+.hero p{font-size:1.15rem;max-width:52ch;color:#2f4950}
+.hero .cta{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2rem}
+.island{position:relative;aspect-ratio:1/1;max-width:460px;margin-inline:auto;width:100%}
+.island svg{width:100%;height:100%}
+.badge{position:absolute;background:#fff;border-radius:18px;padding:.8rem 1.1rem;box-shadow:var(--shadow);font-weight:800;font-size:.9rem;line-height:1.25}
+.badge b{display:block;font-family:'Unbounded';font-size:1.5rem;color:var(--coral)}
+.b1{left:-4%;top:14%;transform:rotate(-4deg)}.b2{right:-2%;bottom:12%;transform:rotate(3deg)}
+.waves{position:absolute;left:0;right:0;bottom:-1px;line-height:0;z-index:1}
+.waves svg{width:100%;height:clamp(60px,9vw,120px)}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.island{max-width:340px}}
+/* about + stats */
+.sea{background:var(--sea);color:#fff;position:relative}
+.sea h2{color:#fff}.sea .sub{color:#bcd6d8}
+.about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:3rem;align-items:start}
+.about-grid p.lead{font-size:1.2rem;color:#e3f0f0;margin-top:1rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.stat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:var(--r);padding:1.3rem}
+.stat b{display:block;font-family:'Unbounded';font-size:clamp(1.7rem,3.4vw,2.4rem);color:var(--sun)}
+.stat span{font-size:.9rem;color:#cfe3e4;line-height:1.35;display:block;margin-top:.3rem}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.stats{grid-template-columns:1fr}}
+/* benefits */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.4rem}
+.card{background:#fff;border-radius:var(--r);padding:1.7rem;box-shadow:var(--shadow);border:1px solid var(--line)}
+.card .ico{width:46px;height:46px;border-radius:14px;background:var(--foam);display:grid;place-items:center;font-family:'Unbounded';font-weight:800;color:var(--sea);margin-bottom:1rem}
+.card p{color:var(--muted);margin-top:.55rem}
+.reviews-wrap{margin-top:3rem}
+.reviews-wrap h3{font-size:1.3rem;margin-bottom:1.2rem}
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.quote{background:var(--sun);border-radius:26px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem}
+.quote:nth-child(3n+2){background:var(--coral);color:#fff}
+.quote:nth-child(3n+3){background:var(--sea);color:#fff}
+.quote .mark{font-family:'Unbounded';font-size:3.6rem;line-height:.6;opacity:.9}
+.quote p{font-size:1.08rem;font-weight:700;line-height:1.5}
+.quote small{margin-top:auto;font-weight:800;opacity:.8}
+@media(max-width:800px){.cards3{grid-template-columns:1fr}}
+/* program */
+.tabs{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;margin:1.8rem 0}
+.tabs button{border:0;background:transparent;font:inherit;font-weight:800;padding:.65rem 1.3rem;border-radius:999px;cursor:pointer;color:var(--muted)}
+.tabs button.on{background:var(--sea);color:#fff}
+.progs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.prog{background:#fff;border-radius:var(--r);padding:1.6rem;border:1px solid var(--line);display:flex;flex-direction:column;gap:.7rem;box-shadow:var(--shadow)}
+.prog p{color:var(--muted);font-size:.97rem}
+.meta{margin-top:auto;padding-top:1rem;border-top:1px dashed var(--line);display:grid;gap:.5rem;font-size:.9rem;font-weight:700}
+.meta span{display:flex;gap:.5rem;align-items:flex-start}
+.price{display:inline-block;background:var(--foam);color:var(--sea);padding:.2rem .7rem;border-radius:999px;font-weight:800}
+@media(max-width:900px){.progs{grid-template-columns:1fr}}
+/* news & events */
+.news-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;margin-top:2.4rem;align-items:start}
+.posts{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+.post{background:#fff;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column}
+.post .img{aspect-ratio:16/10;background:linear-gradient(135deg,var(--sea),var(--coral));display:grid;place-items:center;color:rgba(255,255,255,.85);font-family:'Unbounded';font-size:2.4rem;overflow:hidden}
+.post .img img{width:100%;height:100%;object-fit:cover}
+.post .body{padding:1.2rem 1.3rem 1.5rem}
+.post time{font-size:.8rem;font-weight:800;color:var(--coral);letter-spacing:.06em}
+.post h3{margin:.4rem 0 .5rem;font-size:1.02rem}
+.post p{color:var(--muted);font-size:.93rem}
+.events{background:var(--sea2);color:#fff;border-radius:28px;padding:1.6rem}
+.events h3{margin-bottom:1rem;color:var(--sun)}
+.ev{display:grid;grid-template-columns:64px 1fr;gap:1rem;padding:1rem 0;border-top:1px solid rgba(255,255,255,.14)}
+.ev:first-of-type{border-top:0}
+.ev .d{background:var(--sun);color:var(--ink);border-radius:14px;text-align:center;padding:.5rem .2rem;font-weight:800;line-height:1.1;height:max-content}
+.ev .d b{display:block;font-family:'Unbounded';font-size:1.35rem}
+.ev .d small{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.ev p{font-size:.88rem;color:#c3dcdd;margin-top:.2rem}
+.ev h4{font-size:1rem}
+.ev.past{opacity:.55}
+.empty{color:var(--muted)}
+.events .empty{color:#bcd6d8}
+@media(max-width:960px){.news-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.posts{grid-template-columns:1fr}}
+/* partners */
+.logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-top:2.2rem}
+.logo{background:#fff;border:1px solid var(--line);border-radius:18px;height:120px;display:grid;place-items:center;padding:1rem;text-decoration:none;font-weight:800;color:var(--sea);text-align:center}
+.logo img{max-height:84px;max-width:100%;object-fit:contain;filter:grayscale(.85);opacity:.85;transition:.2s}
+.logo:hover img{filter:none;opacity:1}
+.pb{margin-top:3.6rem;background:var(--foam);border-radius:28px;padding:clamp(1.6rem,4vw,3rem)}
+.pb-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:1.8rem}
+.pb-grid div{background:#fff;border-radius:18px;padding:1.2rem}
+.pb-grid h3{font-size:.95rem;margin-bottom:.4rem}
+.pb-grid p{font-size:.88rem;color:var(--muted)}
+.pb .btn{margin-top:1.8rem}
+@media(max-width:1000px){.pb-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pb-grid{grid-template-columns:1fr}}
+/* team */
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.4rem;margin-top:2.2rem}
+.member{text-align:center}
+.member .ph{width:170px;height:170px;border-radius:50%;margin:0 auto 1rem;background:linear-gradient(135deg,var(--coral),var(--sun));overflow:hidden;display:grid;place-items:center;font-family:'Unbounded';font-size:2.4rem;color:#fff;border:6px solid #fff;box-shadow:var(--shadow)}
+.member .ph img{width:100%;height:100%;object-fit:cover}
+.member small{display:block;color:var(--coral);font-weight:800;margin:.2rem 0 .4rem}
+.member p{color:var(--muted);font-size:.94rem}
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.info{display:grid;gap:1rem;margin-top:1.6rem;font-weight:700}
+.info a{text-decoration:none}.info a:hover{color:var(--sun)}
+.info div{display:flex;gap:.8rem;align-items:flex-start}
+.info i{font-style:normal;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);display:grid;place-items:center;flex:none}
+.soc{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem}
+.soc a{padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.35);text-decoration:none;font-weight:800;font-size:.9rem}
+.soc a:hover{background:#fff;color:var(--sea2)}
+form{background:#fff;color:var(--ink);border-radius:var(--r);padding:1.6rem;display:grid;gap:.9rem}
+form .row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+label{font-weight:800;font-size:.82rem;display:grid;gap:.3rem}
+input,textarea{font:inherit;border:1.5px solid var(--line);border-radius:12px;padding:.75rem .9rem;background:var(--sand);color:var(--ink)}
+input:focus,textarea:focus{outline:2px solid var(--coral);border-color:transparent}
+textarea{min-height:130px;resize:vertical}
+.hp{position:absolute;left:-9999px}
+.note{font-weight:700;font-size:.9rem;min-height:1.2em}
+.note.ok{color:#1d7a4b}.note.err{color:#c0392b}
+@media(max-width:860px){.contact{grid-template-columns:1fr}form .row{grid-template-columns:1fr}}
+footer{background:var(--sea2);color:#9fbfc2;padding:1.8rem 0;font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap bar">
+<a class="brand" href="#top"><i>W</i><span>Wyspa Wolności</span></a>
+<nav id="nav"><ul id="menu"></ul></nav>
+<div class="tools">
+<div class="lang" id="lang"><button data-l="pl">PL</button><button data-l="uk">UA</button><button data-l="en">EN</button></div>
+<a class="btn btn-primary" href="#contact" data-ui="join"></a>
+<button class="burger" id="burger" aria-label="Menu">☰</button>
+</div>
+</div>
+</header>
+<main id="top">
+<section class="hero">
+<div class="wrap">
+<div>
+<span class="eyebrow" data-t="hero_eyebrow"></span>
+<h1 id="heroTitle"></h1>
+<p data-t="hero_text"></p>
+<div class="cta">
+<a class="btn btn-primary" href="#contact" data-ui="join"></a>
+<a class="btn btn-ghost" href="#program" data-ui="seeProgram"></a>
+</div>
+</div>
+<div class="island" aria-hidden="true">
+<svg viewBox="0 0 400 400">
+<circle cx="200" cy="200" r="190" fill="#e6f3ef"/>
+<circle cx="200" cy="200" r="140" fill="#cfe9e2"/>
+<circle cx="300" cy="96" r="38" fill="#ffc83d"/>
+<path d="M70 260 Q200 200 330 260 Q300 330 200 340 Q100 330 70 260Z" fill="#ffd99a"/>
+<path d="M110 262 Q200 224 290 262" fill="none" stroke="#f0b866" stroke-width="5" stroke-linecap="round"/>
+<rect x="193" y="150" width="10" height="112" rx="5" fill="#8a5a2b"/>
+<path d="M198 154 Q150 120 112 150 Q160 140 198 154Z" fill="#1d8a6f"/>
+<path d="M198 154 Q246 118 290 146 Q244 142 198 154Z" fill="#26a07f"/>
+<path d="M198 154 Q176 100 214 92 Q196 124 198 154Z" fill="#1d8a6f"/>
+<path d="M30 310 q22 -14 44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0" fill="none" stroke="#0f4c5c" stroke-width="6" stroke-linecap="round" opacity=".35"/>
+<path d="M50 345 q22 -14 44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0" fill="none" stroke="#0f4c5c" stroke-width="6" stroke-linecap="round" opacity=".2"/>
+</svg>
+<div class="badge b1"><b>150+</b><span id="badge1"></span></div>
+<div class="badge b2"><b>2022</b><span id="badge2"></span></div>
+</div>
+</div>
+<div class="waves"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="#0f4c5c" d="M0 64 C240 120 480 0 720 48 C960 96 1200 8 1440 56 L1440 120 L0 120Z"/></svg></div>
+</section>
+<section class="sea" id="about">
+<div class="wrap about-grid">
+<div class="reveal">
+<span class="eyebrow" data-ui="aboutEyebrow"></span>
+<h2 data-t="about_title"></h2>
+<p class="lead" data-t="about_text"></p>
+</div>
+<div class="reveal">
+<h3 style="color:#fff;margin-bottom:1rem" data-t="stats_title"></h3>
+<div class="stats" id="stats"></div>
+</div>
+</div>
+</section>
+<section id="benefits">
+<div class="wrap">
+<div class="reveal"><span class="eyebrow" data-t="benefits_sub"></span><h2 data-t="benefits_title"></h2></div>
+<div class="cards3 reveal" id="benefitCards"></div>
+<div class="reviews-wrap reveal" id="reviewsWrap"><h3 data-t="testimonials_title"></h3><div class="reviews" id="reviews"></div></div>
+</div>
+</section>
+<section id="program" style="background:var(--foam)">
+<div class="wrap">
+<div class="reveal"><span class="eyebrow" data-ui="programEyebrow"></span><h2 data-t="program_title"></h2><p class="sub" data-t="program_sub"></p></div>
+<div class="tabs reveal" id="tabs"><button data-g="older" class="on"></button><button data-g="younger"></button></div>
+<div class="progs" id="progs"></div>
+</div>
+</section>
+<section id="news">
+<div class="wrap">
+<div class="reveal"><span class="eyebrow" data-ui="newsEyebrow"></span><h2 data-t="news_title"></h2></div>
+<div class="news-grid">
+<div class="posts" id="posts"></div>
+<aside class="events reveal"><h3 data-t="events_title"></h3><div id="events"></div></aside>
+</div>
+</div>
+</section>
+<section id="partners" style="background:#fff">
+<div class="wrap">
+<div class="reveal"><span class="eyebrow" data-ui="partnersEyebrow"></span><h2 data-t="partners_title"></h2><p class="sub" data-t="partners_sub"></p></div>
+<div class="logos reveal" id="logos"></div>
+<div class="pb reveal">
+<h2 data-t="partner_benefits_title" style="font-size:clamp(1.4rem,2.8vw,2rem)"></h2>
+<p class="sub" data-t="partner_benefits_text"></p>
+<div class="pb-grid" id="pbGrid"></div>
+<a class="btn btn-primary" href="#contact" data-ui="join"></a>
+</div>
+</div>
+</section>
+<section id="team">
+<div class="wrap">
+<div class="reveal"><span class="eyebrow" data-ui="teamEyebrow"></span><h2 data-t="team_title"></h2></div>
+<div class="team reveal" id="team"></div>
+</div>
+</section>
+<section class="sea" id="contact">
+<div class="wrap contact">
+<div class="reveal">
+<span class="eyebrow" data-ui="contactEyebrow"></span>
+<h2 data-t="contact_title"></h2>
+<p class="sub" data-t="contact_text"></p>
+<div class="info" id="info"></div>
+<div class="soc" id="soc"></div>
+<p style="margin-top:1.6rem"><a id="support" class="btn btn-light" href="#contact" data-ui="support"></a></p>
+</div>
+<form id="form" class="reveal" novalidate>
+<div class="row"><label><span data-ui="fName"></span><input name="name" required maxlength="80" autocomplete="given-name"></label>
+<label><span data-ui="fSurname"></span><input name="surname" maxlength="80" autocomplete="family-name"></label></div>
+<label><span data-ui="fEmail"></span><input name="email" type="email" required maxlength="120" autocomplete="email"></label>
+<label><span data-ui="fTopic"></span><input name="topic" maxlength="120"></label>
+<label><span data-ui="fMessage"></span><textarea name="message" required maxlength="3000"></textarea></label>
+<input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button class="btn btn-primary" type="submit" data-ui="send"></button>
+<div class="note" id="note" role="status"></div>
+</form>
+</div>
+</section>
+</main>
+<footer><div class="wrap"><span>© <span id="yr"></span> Fundacja Wyspa Wolności</span><span id="reg"></span></div></footer>
+<script>
+const DEFAULTS = {"texts":{"hero_eyebrow":{"pl":"Klub dla nastolatków w Polsce","uk":"Клуб для підлітків у Польщі","en":"A club for teens in Poland"},"hero_title":{"pl":"Bądź sobą. Być razem!","uk":"Будь собою. Будьмо разом!","en":"Be yourself. Be together."},"hero_text":{"pl":"Wyspa Wolności to klub dla nastolatków, którzy przeprowadzili się do Polski. Założyły go w 2022 roku dwie mamy, żeby pomóc swoim dzieciom odnaleźć się w nowym miejscu — bez utraty więzi z własną kulturą i korzeniami.","uk":"«Wyspa Wolności» — клуб для підлітків, які переїхали до Польщі. Його заснували у 2022 році дві мами, щоб допомогти своїм дітям освоїтися на новому місці, не втрачаючи зв’язку зі своєю культурою та корінням.","en":"Wyspa Wolności is a club for teenagers who have moved to Poland. Two mothers founded it in 2022 to help their children settle into a new place — without losing touch with their own culture and roots."},"about_title":{"pl":"Kim jesteśmy","uk":"Хто ми","en":"Who we are"},"about_text":{"pl":"Ponad 150 młodych osób, wspólnota oparta na równości i akceptacji. Tu każdy może być sobą, znaleźć swoich ludzi i wejść w nowe środowisko, nie zostawiając za sobą tego, skąd pochodzi.","uk":"Понад 150 молодих людей і спільнота, що ґрунтується на рівності та прийнятті. Тут кожен може бути собою, знайти своїх людей і влитися в нове середовище, не залишаючи позаду те, звідки він прийшов.","en":"More than 150 young people and a community built on equality and acceptance. Here everyone can be themselves, find their people and join a new environment without leaving behind where they come from."},"stats_title":{"pl":"Klub w liczbach","uk":"Клуб у цифрах","en":"The club in numbers"},"benefits_title":{"pl":"Dlaczego Wyspa","uk":"Чому «Wyspa»","en":"Why Wyspa"},"benefits_sub":{"pl":"Przeciwdziałamy samotności","uk":"Ми протидіємо самотності","en":"We fight loneliness"},"program_title":{"pl":"Program i zajęcia","uk":"Програма та заняття","en":"Programme and activities"},"program_sub":{"pl":"Dwie grupy wiekowe, regularne spotkania, mentorzy i dużo wspólnego czasu.","uk":"Дві вікові групи, регулярні зустрічі, ментори й багато спільного часу.","en":"Two age groups, regular meetings, mentors and plenty of time together."},"news_title":{"pl":"Wydarzenia i aktualności","uk":"Події та новини","en":"Events and news"},"events_title":{"pl":"Nadchodzące wydarzenia","uk":"Найближчі події","en":"Upcoming events"},"partners_title":{"pl":"Nasi partnerzy","uk":"Наші партнери","en":"Our partners"},"partners_sub":{"pl":"Dziękujemy organizacjom i firmom, które razem z nami budują wspólnotę.","uk":"Дякуємо організаціям і компаніям, які разом з нами будують спільноту.","en":"Thank you to the organisations and companies who build the community with us."},"partner_benefits_title":{"pl":"Co otrzymują partnerzy?","uk":"Що отримують партнери?","en":"What do partners get?"},"partner_benefits_text":{"pl":"Zapraszamy do współpracy firmy, fundacje i instytucje, którym bliska jest integracja młodych ludzi.","uk":"Запрошуємо до співпраці компанії, фонди та установи, яким близька інтеграція молоді.","en":"We invite companies, foundations and institutions who care about the integration of young people."},"team_title":{"pl":"Nasz zespół","uk":"Наша команда","en":"Our team"},"contact_title":{"pl":"Łączność","uk":"Зв’язок","en":"Get in touch"},"contact_text":{"pl":"Dajemy dzieciom więcej możliwości i pewności siebie w patrzeniu w przyszłość. Napisz do nas — chętnie odpowiemy.","uk":"Ми даємо дітям більше можливостей і впевненості у майбутньому. Напишіть нам — із радістю відповімо.","en":"We give children more opportunities and confidence about the future. Write to us — we will gladly reply."},"testimonials_title":{"pl":"Głosy uczestników","uk":"Голоси учасників","en":"Voices of our members"}},"stats":[{"value":"150+","label":{"pl":"uczestników w dwóch grupach wiekowych","uk":"учасників у двох вікових групах","en":"members in two age groups"}},{"value":"200+","label":{"pl":"rodziców we wspólnocie","uk":"батьків у спільноті","en":"parents in the community"}},{"value":"8","label":{"pl":"stałych mentorów","uk":"постійних менторів","en":"permanent mentors"}},{"value":"12","label":{"pl":"partnerów","uk":"партнерів","en":"partners"}},{"value":"15","label":{"pl":"kierunków tematycznych, zajęć i kursów","uk":"тематичних напрямів, занять і курсів","en":"themed directions, classes and courses"}},{"value":"3560","label":{"pl":"godzin zajęć, warsztatów, wyjazdów i wspólnego czasu","uk":"годин занять, майстер-класів, поїздок і спільного часу","en":"hours of classes, workshops, trips and time together"}}],"benefits":[{"title":{"pl":"Koniec z samotnością","uk":"Кінець самотності","en":"An end to loneliness"},"text":{"pl":"Pierwsze miesiące w nowym kraju bywają trudne. W klubie od pierwszego spotkania jest do kogo się odezwać.","uk":"Перші місяці в новій країні бувають непростими. У клубі з першої зустрічі є з ким поговорити.","en":"The first months in a new country can be hard. At the club there is someone to talk to from the very first meeting."}},{"title":{"pl":"Integracja bez utraty korzeni","uk":"Інтеграція без втрати коріння","en":"Integration without losing roots"},"text":{"pl":"Poznajemy polską kulturę i język, ale pielęgnujemy też własne tradycje i tożsamość.","uk":"Ми вивчаємо польську культуру й мову, але плекаємо і власні традиції та ідентичність.","en":"We learn Polish culture and language while nurturing our own traditions and identity."}},{"title":{"pl":"Bezpieczna wspólnota","uk":"Безпечна спільнота","en":"A safe community"},"text":{"pl":"Stali mentorzy, zaangażowani rodzice i prywatny czat, w którym zawsze ktoś odpowie.","uk":"Постійні ментори, залучені батьки та приватний чат, де завжди хтось відповість.","en":"Permanent mentors, involved parents and a private chat where someone always replies."}}],"programs":[{"group":"older","title":{"pl":"Wieczór twórczy Wyspa","uk":"Творчий вечір «Wyspa»","en":"Wyspa creative evening"},"desc":{"pl":"Występy, muzyka i sztuka — scena dla młodych twórców.","uk":"Виступи, музика та мистецтво — сцена для юних авторів.","en":"Performances, music and art — a stage for young creators."},"schedule":{"pl":"Raz w miesiącu, sobota, 3–4 godz.","uk":"Раз на місяць, субота, 3–4 год.","en":"Monthly, Saturday, 3–4 h"},"price":{"pl":"Bezpłatnie, wymagana rejestracja","uk":"Безкоштовно, потрібна реєстрація","en":"Free, registration required"}},{"group":"older","title":{"pl":"Warsztat doradztwa zawodowego i umiejętności przyszłości","uk":"Профорієнтація та навички майбутнього","en":"Career guidance and future-skills workshop"},"desc":{"pl":"Testy, informacja zwrotna i praktyczne zadania, które pomagają zobaczyć własną drogę.","uk":"Тести, зворотний зв’язок і практичні завдання, що допомагають побачити власний шлях.","en":"Tests, feedback and practical tasks that help you see your own path."},"schedule":{"pl":"Raz w miesiącu, sobota, 3 godz.","uk":"Раз на місяць, субота, 3 год.","en":"Monthly, Saturday, 3 h"},"price":{"pl":"","uk":"","en":""}},{"group":"older","title":{"pl":"Klub dyskusyjny","uk":"Дискусійний клуб","en":"Discussion club"},"desc":{"pl":"Rozmowy o ważnych tematach — uczymy się słuchać i mówić własnym głosem.","uk":"Розмови про важливі теми — вчимося слухати й говорити власним голосом.","en":"Conversations about things that matter — learning to listen and to speak in your own voice."},"schedule":{"pl":"","uk":"","en":""},"price":{"pl":"Bezpłatnie, wymagana rejestracja","uk":"Безкоштовно, потрібна реєстрація","en":"Free, registration required"}},{"group":"younger","title":{"pl":"Pracownia artystyczna","uk":"Арт-студія","en":"Art studio"},"desc":{"pl":"Rysujemy, lepimy i eksperymentujemy w małej grupie.","uk":"Малюємо, ліпимо й експериментуємо в малій групі.","en":"Drawing, sculpting and experimenting in a small group."},"schedule":{"pl":"Co tydzień, sobota, 1,5 godz., do 10 osób","uk":"Щотижня, субота, 1,5 год., до 10 осіб","en":"Weekly, Saturday, 1.5 h, max 10"},"price":{"pl":"50 zł","uk":"50 zł","en":"50 PLN"}},{"group":"younger","title":{"pl":"Warsztat gier","uk":"Ігрова майстерня","en":"Games workshop"},"desc":{"pl":"Gry planszowe i zespołowe, które uczą współpracy i dobrej zabawy.","uk":"Настільні та командні ігри, що вчать співпраці й веселощів.","en":"Board and team games that teach cooperation and fun."},"schedule":{"pl":"Co tydzień, środa, 1,5 godz., do 12 osób","uk":"Щотижня, середа, 1,5 год., до 12 осіб","en":"Weekly, Wednesday, 1.5 h, max 12"},"price":{"pl":"Bezpłatnie","uk":"Безкоштовно","en":"Free"}},{"group":"younger","title":{"pl":"Klub rozmów po polsku","uk":"Розмовний клуб польської","en":"Polish conversation club"},"desc":{"pl":"Swobodne rozmowy, które oswajają język i dodają odwagi.","uk":"Невимушені розмови, що допомагають освоїти мову й додають сміливості.","en":"Relaxed conversations that make the language familiar and build confidence."},"schedule":{"pl":"Dwa razy w tygodniu (wt/czw), 1 godz., do 10 osób","uk":"Двічі на тиждень (вт/чт), 1 год., до 10 осіб","en":"Twice a week (Tue/Thu), 1 h, max 10"},"price":{"pl":"35 zł","uk":"35 zł","en":"35 PLN"}}],"partners":[{"name":"HIAS","url":"","logo":""},{"name":"Kuchnia Konfliktu","url":"","logo":""},{"name":"Ashoka","url":"","logo":""},{"name":"Polskie Radio dla Zagranicy","url":"","logo":""},{"name":"m.st. Warszawa","url":"","logo":""},{"name":"Boxing Brandt","url":"","logo":""}],"partner_benefits":[{"title":{"pl":"Wpływ społeczny","uk":"Соціальний вплив","en":"Social impact"},"text":{"pl":"Realnie wspieracie integrację młodych ludzi w Polsce.","uk":"Ви реально підтримуєте інтеграцію молоді в Польщі.","en":"You directly support the integration of young people in Poland."}},{"title":{"pl":"Pozytywny wizerunek","uk":"Позитивний імідж","en":"Positive public image"},"text":{"pl":"Wasza marka kojarzy się z troską o następne pokolenie.","uk":"Ваш бренд асоціюється з турботою про наступне покоління.","en":"Your brand is linked with care for the next generation."}},{"title":{"pl":"Przejrzyste wyniki","uk":"Прозорі результати","en":"Transparent results"},"text":{"pl":"Pokazujemy, na co idą środki i jakie przynoszą efekty.","uk":"Ми показуємо, на що йдуть кошти і які результати вони дають.","en":"We show where resources go and what they achieve."}},{"title":{"pl":"Wspólny rozwój","uk":"Спільний розвиток","en":"Shared growth"},"text":{"pl":"Wspólne projekty rozwijają zarówno partnerów, jak i klub.","uk":"Спільні проєкти розвивають і партнерів, і клуб.","en":"Joint projects help both partners and the club grow."}},{"title":{"pl":"Zaufanie i wspólnota","uk":"Довіра і спільнота","en":"Trust and community"},"text":{"pl":"Dołączacie do społeczności ludzi, którzy sobie ufają.","uk":"Ви долучаєтесь до спільноти людей, які довіряють одне одному.","en":"You join a community of people who trust each other."}}],"team":[{"name":"Naziea Melianec","photo":"","role":{"pl":"Założycielka fundacji","uk":"Засновниця фонду","en":"Founder of the foundation"},"bio":{"pl":"Magister pedagogiki i psychologii.","uk":"Магістр педагогіки та психології.","en":"Master’s degree in pedagogy and psychology."}}],"contact":{"email":"wolnawyspaul@gmail.com","phone1":"","phone2":"","address":"Warszawa, ul. Puławska 114","instagram":"https://www.instagram.com/wolnawyspa","facebook":"","telegram":"","support_url":"","registry":"KRS 0001225856 · NIP 5243065611 · REGON 544053050"},"testimonials":[],"news":[{"title":"Seminarium projektu „Warszawa — nasze miejsce”","text":"Drugie spotkanie warsztatowe poświęcone produkcji medialnej. Wzięło w nim udział 15 młodych osób z Białorusi, Ukrainy, Polski, Chorwacji i Gruzji.","date":"","image":""},{"title":"Projekt „Warszawa — nasze miejsce”","text":"Trzymiesięczny projekt dla młodzieży w wieku 14–21 lat z Polski, Ukrainy, Białorusi i Gruzji. Patrzymy na miasto oczami jego młodych mieszkańców. Projekt finansuje miasto stołeczne Warszawa.","date":"","image":""},{"title":"Piknik na Polu Mokotowskim","text":"Piknik dla młodzieży i rodziców na Polu Mokotowskim, zorganizowany przy wsparciu naszego partnera Boxing Brandt.","date":"","image":""},{"title":"Zbiórka butelek i puszek z Boxing Brandt","text":"W klubie bokserskim w Łomiankach stanął kosz na butelki i puszki. Zbiórka wspiera inicjatywy dla dzieci.","date":"","image":""},{"title":"Obóz letni nad Bałtykiem","text":"Wyjazdowy obóz dla młodzieży w wieku 13–16 lat w Stanicy Przygody w Sztutowie: sport, ogniska i warsztaty wystąpień publicznych.","date":"","image":""},{"title":"Piknik anime","text":"Piknik w Wolskim Centrum Kultury w Warszawie, razem z przyjaciółmi z Wrocławia: gotowanie, K-pop, origami, quizy, karaoke i ceremonia herbaty.","date":"","image":""}],"events":[]};
+const SB_URL = 'https://qhqltpyjjzypmuifigzi.supabase.co';
+const SB_KEY = 'sb_publishable_UpNHZdsrWamz2isgk_Hgeg_hte_zYPn';
+const UI = {
+pl:{join:'Dołącz!',seeProgram:'Poznaj program',aboutEyebrow:'O klubie',programEyebrow:'Zajęcia',newsEyebrow:'Co u nas',partnersEyebrow:'Razem raźniej',teamEyebrow:'Ludzie',contactEyebrow:'Kontakt',support:'Wesprzyj projekt',
+older:'14–18+ lat',younger:'10–13 lat',menu:['Kim jesteśmy','Program','Aktualności','Partnerstwo','Kontakt'],
+fName:'Imię',fSurname:'Nazwisko',fEmail:'E-mail',fTopic:'Temat',fMessage:'Wiadomość',send:'Skontaktuj się z nami',
+ok:'Dziękujemy! Odezwiemy się wkrótce.',err:'Nie udało się wysłać. Spróbuj ponownie lub napisz na e-mail.',need:'Uzupełnij imię, e-mail i wiadomość.',
+noEvents:'Wkrótce pojawią się nowe wydarzenia.',noNews:'Wkrótce pojawią się nowe aktualności.',past:'Zakończone',members:'uczestników',since:'rok założenia',addr:'Adres',phone:'Telefon',mail:'E-mail',reg:'Dane rejestrowe'},
+uk:{join:'Долучитися!',seeProgram:'Дізнатися про програму',aboutEyebrow:'Про клуб',programEyebrow:'Заняття',newsEyebrow:'Що в нас',partnersEyebrow:'Разом веселіше',teamEyebrow:'Люди',contactEyebrow:'Контакти',support:'Підтримати проєкт',
+older:'14–18+ років',younger:'10–13 років',menu:['Хто ми','Програма','Новини','Партнерство','Контакти'],
+fName:'Ім’я',fSurname:'Прізвище',fEmail:'E-mail',fTopic:'Тема',fMessage:'Повідомлення',send:'Зв’язатися з нами',
+ok:'Дякуємо! Ми скоро відповімо.',err:'Не вдалося надіслати. Спробуйте ще раз або напишіть на e-mail.',need:'Заповніть ім’я, e-mail і повідомлення.',
+noEvents:'Незабаром з’являться нові події.',noNews:'Незабаром з’являться нові новини.',past:'Минулі',members:'учасників',since:'рік заснування',addr:'Адреса',phone:'Телефон',mail:'E-mail',reg:'Реєстраційні дані'},
+en:{join:'Join us',seeProgram:'See the programme',aboutEyebrow:'About the club',programEyebrow:'Activities',newsEyebrow:'What’s new',partnersEyebrow:'Better together',teamEyebrow:'People',contactEyebrow:'Contact',support:'Support the project',
+older:'Ages 14–18+',younger:'Ages 10–13',menu:['Who we are','Programme','News','Partnership','Contact'],
+fName:'First name',fSurname:'Surname',fEmail:'E-mail',fTopic:'Subject',fMessage:'Message',send:'Get in touch',
+ok:'Thank you! We will reply soon.',err:'Could not send. Please try again or write to us by e-mail.',need:'Please fill in name, e-mail and message.',
+noEvents:'New events are coming soon.',noNews:'News is coming soon.',past:'Past',members:'members',since:'founded',addr:'Address',phone:'Phone',mail:'E-mail',reg:'Registration details'}
+};
+const LOCALE = {pl:'pl-PL',uk:'uk-UA',en:'en-GB'};
+const BADGE = {pl:['uczestników w klubie','rok założenia'],uk:['учасників у клубі','рік заснування'],en:['members in the club','year founded']};
+let lang = 'pl';
+try{ lang = localStorage.getItem('ww_lang') || ''; }catch(e){}
+if(!UI[lang]){ const n=(navigator.language||'pl').slice(0,2); lang = n==='uk'||n==='ru' ? 'uk' : n==='en' ? 'en' : 'pl'; }
+let D = JSON.parse(JSON.stringify(DEFAULTS));
+let NEWS = [], EVENTS = [];
+let group = 'older';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tr = o => (o && typeof o==='object') ? (o[lang] || o.pl || o.en || o.uk || '') : (o ?? '');
+const $ = s => document.querySelector(s);
+const safeUrl = u => /^(https?:\/\/|mailto:|tel:|#|assets\/)/i.test(u||'') ? u : '';
+async function sb(path){
+const r = await fetch(SB_URL + '/rest/v1/' + path, {headers:{apikey:SB_KEY}});
+if(!r.ok) throw new Error('HTTP ' + r.status);
+return r.json();
+}
+function mergeContent(db){
+if(!db || typeof db!=='object') return;
+for(const k of Object.keys(db)){
+if(db[k]==null) continue;
+if(k==='texts' || k==='contact') D[k] = Object.assign({}, D[k], db[k]);
+else if(Array.isArray(db[k])) D[k] = db[k];
+}
+}
+function fmtDate(iso, opts){
+const d = new Date(iso + (iso.length===10 ? 'T12:00:00' : ''));
+return isNaN(d) ? null : d.toLocaleDateString(LOCALE[lang], opts);
+}
+function render(){
+document.documentElement.lang = lang;
+const u = UI[lang];
+document.querySelectorAll('[data-t]').forEach(el => el.textContent = tr(D.texts[el.dataset.t]));
+document.querySelectorAll('[data-ui]').forEach(el => el.textContent = u[el.dataset.ui] || '');
+document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.l===lang));
+// hero title: last word highlighted
+const ht = tr(D.texts.hero_title).trim(); const parts = ht.split(/\s+/);
+const last = parts.pop();
+$('#heroTitle').innerHTML = esc(parts.join(' ')) + (parts.length?' ':'') + '<em>' + esc(last) + '</em>';
+$('#badge1').textContent = BADGE[lang][0]; $('#badge2').textContent = BADGE[lang][1];
+$('#menu').innerHTML = ['#about','#program','#news','#partners','#contact'].map((h,i)=>`<li><a href="${h}">${esc(u.menu[i])}</a></li>`).join('');
+$('#stats').innerHTML = (D.stats||[]).map(s=>`<div class="stat"><b>${esc(s.value)}</b><span>${esc(tr(s.label))}</span></div>`).join('');
+$('#benefitCards').innerHTML = (D.benefits||[]).map((b,i)=>`<div class="card"><div class="ico">${i+1}</div><h3>${esc(tr(b.title))}</h3><p>${esc(tr(b.text))}</p></div>`).join('');
+const rv = (D.testimonials||[]).filter(r=>tr(r.text));
+$('#reviewsWrap').style.display = rv.length ? '' : 'none';
+$('#reviews').innerHTML = rv.map(r=>`<figure class="quote"><div class="mark">“</div><p>${esc(tr(r.text))}</p><small>— ${esc(r.name||'')}${r.age?', '+esc(r.age):''}</small></figure>`).join('');
+const tabs = document.querySelectorAll('#tabs button');
+tabs[0].textContent = u.older; tabs[1].textContent = u.younger;
+tabs.forEach(b=>b.classList.toggle('on', b.dataset.g===group));
+$('#progs').innerHTML = (D.programs||[]).filter(p=>p.group===group).map(p=>`
+<article class="prog"><h3>${esc(tr(p.title))}</h3><p>${esc(tr(p.desc))}</p>
+${(tr(p.schedule)||tr(p.price))?`<div class="meta">${tr(p.schedule)?`<span>🗓 ${esc(tr(p.schedule))}</span>`:''}${tr(p.price)?`<span><i class="price">${esc(tr(p.price))}</i></span>`:''}</div>`:''}</article>`).join('');
+renderNews(); renderEvents();
+$('#logos').innerHTML = (D.partners||[]).map(p=>{
+const inner = p.logo ? `<img src="${esc(safeUrl(p.logo))}" alt="${esc(p.name)}" loading="lazy">` : esc(p.name);
+const href = safeUrl(p.url);
+return href ? `<a class="logo" href="${esc(href)}" target="_blank" rel="noopener" title="${esc(p.name)}">${inner}</a>` : `<div class="logo" title="${esc(p.name)}">${inner}</div>`;
+}).join('');
+$('#pbGrid').innerHTML = (D.partner_benefits||[]).map(b=>`<div><h3>${esc(tr(b.title))}</h3><p>${esc(tr(b.text))}</p></div>`).join('');
+$('#team').innerHTML = (D.team||[]).map(m=>`<div class="member"><div class="ph">${m.photo?`<img src="${esc(safeUrl(m.photo))}" alt="${esc(m.name)}" loading="lazy">`:esc((m.name||'?').trim().charAt(0))}</div><h3>${esc(m.name)}</h3><small>${esc(tr(m.role))}</small><p>${esc(tr(m.bio))}</p></div>`).join('');
+const c = D.contact || {};
+const rows = [];
+if(c.address) rows.push(`<div><i>📍</i><span>${esc(c.address)}</span></div>`);
+if(c.email) rows.push(`<div><i>✉</i><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>`);
+[c.phone1,c.phone2].filter(Boolean).forEach(p=>rows.push(`<div><i>☎</i><a href="tel:${esc(String(p).replace(/[^+\d]/g,''))}">${esc(p)}</a></div>`));
+$('#info').innerHTML = rows.join('');
+$('#soc').innerHTML = [['Instagram',c.instagram],['Facebook',c.facebook],['Telegram',c.telegram]].filter(x=>safeUrl(x[1])).map(x=>`<a href="${esc(safeUrl(x[1]))}" target="_blank" rel="noopener">${x[0]}</a>`).join('');
+const sup = safeUrl(c.support_url); const a = $('#support');
+a.href = sup || '#contact'; if(sup && !sup.startsWith('#')){ a.target='_blank'; a.rel='noopener'; }
+$('#reg').textContent = c.registry || '';
+$('#yr').textContent = new Date().getFullYear();
+}
+function renderNews(){
+const u = UI[lang];
+const items = NEWS.slice(0, 8);
+$('#posts').innerHTML = items.length ? items.map(n=>{
+const dt = n.date ? fmtDate(n.date,{day:'numeric',month:'long',year:'numeric'}) : '';
+const img = n.image ? `<img src="${esc(safeUrl(n.image))}" alt="" loading="lazy">` : esc((n.title||'W').trim().charAt(0));
+return `<article class="post reveal in"><div class="img">${img}</div><div class="body">${dt?`<time>${esc(dt)}</time>`:''}<h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div></article>`;
+}).join('') : `<p class="empty">${esc(u.noNews)}</p>`;
+}
+function renderEvents(){
+const u = UI[lang];
+const today = new Date().toISOString().slice(0,10);
+const up = EVENTS.filter(e=>(e.date||'9999')>=today).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+const pa = EVENTS.filter(e=>e.date && e.date<today).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,2);
+const one = (e,past)=>{
+const dd = e.date ? new Date(e.date+'T12:00:00') : null; const ok = dd && !isNaN(dd);
+const day = ok ? dd.getDate() : '•'; const mon = ok ? dd.toLocaleDateString(LOCALE[lang],{month:'short'}) : '';
+const meta = [e.time, e.place].filter(Boolean).map(esc).join(' · ');
+return `<div class="ev${past?' past':''}"><div class="d"><b>${day}</b><small>${esc(mon)}</small></div><div><h4>${esc(e.title)}</h4>${meta?`<p>${meta}</p>`:''}${e.text?`<p>${esc(e.text)}</p>`:''}</div></div>`;
+};
+let h = up.length ? up.map(e=>one(e,false)).join('') : `<p class="empty">${esc(u.noEvents)}</p>`;
+if(pa.length) h += `<p style="margin:1rem 0 .2rem;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:#bcd6d8;font-weight:800">${esc(u.past)}</p>` + pa.map(e=>one(e,true)).join('');
+$('#events').innerHTML = h;
+}
+async function load(){
+const [c,n,e] = await Promise.allSettled([
+sb('site_content?id=eq.1&select=data'),
+sb('news?select=*&order=date.desc.nullslast,created_at.desc'),
+sb('events?select=*&order=date.asc')
+]);
+if(c.status==='fulfilled' && c.value[0]) mergeContent(c.value[0].data);
+NEWS = n.status==='fulfilled' ? n.value : (DEFAULTS.news||[]);
+EVENTS = e.status==='fulfilled' ? e.value : (DEFAULTS.events||[]);
+render();
+}
+document.querySelectorAll('#lang button').forEach(b=>b.onclick=()=>{ lang=b.dataset.l; try{localStorage.setItem('ww_lang',lang)}catch(e){} render(); });
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{ group=b.dataset.g; render(); });
+$('#burger').onclick = ()=>$('#nav').classList.toggle('open');
+$('#nav').addEventListener('click', e=>{ if(e.target.tagName==='A') $('#nav').classList.remove('open'); });
+$('#form').addEventListener('submit', async ev=>{
+ev.preventDefault();
+const f = ev.target, u = UI[lang], note = $('#note');
+const v = Object.fromEntries(new FormData(f));
+note.className='note';
+if(v.website){ note.textContent=u.ok; note.classList.add('ok'); f.reset(); return; }
+if(!v.name.trim() || !/^\S+@\S+\.\S+$/.test(v.email) || !v.message.trim()){ note.textContent=u.need; note.classList.add('err'); return; }
+const btn = f.querySelector('button'); btn.disabled = true;
+try{
+const r = await fetch(SB_URL+'/rest/v1/messages',{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+body:JSON.stringify({name:v.name.trim(),surname:(v.surname||'').trim(),email:v.email.trim(),topic:(v.topic||'').trim(),message:v.message.trim(),lang})});
+if(!r.ok) throw new Error(r.status);
+note.textContent=u.ok; note.classList.add('ok'); f.reset();
+}catch(e){ note.textContent=u.err; note.classList.add('err'); }
+btn.disabled=false;
+});
+if('IntersectionObserver' in window){
+const io = new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);} }),{threshold:.08});
+const watch = ()=>document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+watch(); setTimeout(watch,600);
+}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+render();   // instant paint from embedded defaults
+load();     // then cloud content
+</script>
+</body>
+</html>
